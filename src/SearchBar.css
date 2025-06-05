@@ -1,0 +1,27 @@
+.search-container {
+    margin-bottom: 10px;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.search-input {
+    padding: 20px;
+    width: 70%;
+    font-size: 18px;
+}
+
+.search-button {
+
+    padding: 5px, 5px;
+    font-size: 18px;
+    background-color: aqua;
+    color: white;
+    border-width: thin medium thick 10px;  
+    cursor: pointer  
+}
+
+.loading, .error {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 18px;
+}
