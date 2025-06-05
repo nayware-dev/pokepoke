@@ -1,9 +1,7 @@
 import { useState } from 'react'
+import axios from 'axios';
 import SearchBar from './SearchBar'
 import ResultsDisplay from './ResultsDisplay'
-import pokemonLogo from './pokemonLogo.png'
-import axios from 'axios';
-
 import './App.css'
 
 function App() {
@@ -12,32 +10,46 @@ function App() {
   const [error, setError] = useState(null);
 
   const searchPokemon = (query) => {
+      setPokemon(null)
       setLoading(true);
       setError(null);
 
-      axios.get('https://pokeapi.co/api/v2/pokemon/${query.LowerCase().trim()}')
+    const pokemonName = query.toLowerCase().trim();
+      axios.get('https://pokeapi.co/api/v2/pokemon/')
       .then(response => {
-  console.log("Data:", response.data);
-    setPokemon(response.data) 
+     setPokemon(response.data) 
+     setError(null)
         })
-        .catch(error => {
-          console.log("Error:", error);
-          setError('Error: $(error.message)');
+        .catch(err => {
+          if (err.response) {
+            setError('Pokemon not found (Status: ${err.response.status})');
+          } else if (err.request) {
+            setError("Network error. Please check your connection.");
+
+          } else {
+            setError('Error: ${err.message}')
+          }
           setPokemon(null)
-      
-      }) .finally (() => {
+      }) 
+      .finally (() => {
         setLoading(false);
       })
   };
 
+const handleBack = () => {
+  setPokemon(null)
+  setError(null)
+  setLoading(false)
+}
   return (
       <div className='app'>
       <h1>Welcome to The Pokemon Pages</h1>
-      <SearchBar onSearch={searchPokemon} />
+      {!pokemon && !loading && <SearchBar onSearch={searchPokemon} />}
       <ResultsDisplay
         pokemon={pokemon}
         loading={loading}
         error={error}
+        onBack={handleBack}
         />
         </div>
 
