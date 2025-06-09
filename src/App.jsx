@@ -10,13 +10,16 @@ function App() {
   const [error, setError] = useState(null);
 
   const searchPokemon = (query) => {
+
       setPokemon(null)
       setLoading(true);
       setError(null);
 
     const pokemonName = query.toLowerCase().trim();
-      axios.get('https://pokeapi.co/api/v2/pokemon/')
+      axios.get(`https://pokeapi.co/api/v2/pokemon/${pokemonName}`)
       .then(response => {
+        console.log("API RESPONSE:", response);
+        console.log("Pokemon data received:", response.data)
      setPokemon(response.data) 
      setError(null)
         })
